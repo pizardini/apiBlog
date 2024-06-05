@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseAPIKey();
+// app.UseAPIKey();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -28,10 +28,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-
+// app.UseAuthentication();
 app.MapControllers();
 
 app.Run();
+

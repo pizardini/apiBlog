@@ -280,3 +280,4 @@ C:\Users\pizar\OneDrive\Desktop\Dev\Tiago\apiBlog\obj\Debug\net8.0\refint\apiBlo
 C:\Users\pizar\OneDrive\Desktop\Dev\Tiago\apiBlog\obj\Debug\net8.0\apiBlog.pdb
 C:\Users\pizar\OneDrive\Desktop\Dev\Tiago\apiBlog\obj\Debug\net8.0\apiBlog.genruntimeconfig.cache
 C:\Users\pizar\OneDrive\Desktop\Dev\Tiago\apiBlog\obj\Debug\net8.0\ref\apiBlog.dll
+C:\Users\pizar\OneDrive\Desktop\Dev\Tiago\apiBlog\obj\Debug\net8.0\apiBlog.sourcelink.json
