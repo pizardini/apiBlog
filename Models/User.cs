@@ -13,5 +13,14 @@ public class User
     [Required]
     [MinLength(5, ErrorMessage = "A descrição deve possuir, no mínimo, 5 caracteres")]
     [MaxLength(100)]
-    public string Descricao { get; set; }
+
+    public string Email { get; set; }
+
+    public DateTime BirthDate { get; set; }
+    public string Password { get; set; }
+
+    public string Code { get; set; }
+
+    public UserRole Role {get; set; }
+    public bool Active { get; set; }
 }
