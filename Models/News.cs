@@ -1,8 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 public class News
 {
     [Required]
+    [Key]
     public int Id { get; set; }
 
     [Required(ErrorMessage = "O Título é obrigatório")]
@@ -10,10 +14,10 @@ public class News
     [MaxLength(100, ErrorMessage = "O título deve possuir, no máximo, 100 caracteres")]
     public string Headline { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "O subtítulo é obrigatório")]
     public string Subhead { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "O texto é obrigatório")]
     public string Text { get; set; }
     
     [Required]
@@ -21,7 +25,21 @@ public class News
     public DateTime PublicationDateTime { get; set; }
 
     [Required]
+    [DataType(DataType.DateTime)]
+    public DateTime LastUpdate { get; set; }
+
+    // public Reaction? Reactions {get; set; }
+
+    public int CommentId {get; set;}
+    public Comment? UserComment {get; set;}
+
+    [Required]
     public int UserId { get; set; }
 
-    public User? UserNews { get; set; }
+    [Required]
+    public Author UserNews { get; set; }
+
+    [Required]
+    public bool Published { get; set; }
 }
+

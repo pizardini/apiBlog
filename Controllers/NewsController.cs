@@ -21,9 +21,23 @@ public class NewsController : Controller
         }
         catch
         {
-            return BadRequest("Erro ao listar as notícias");
+            return BadRequest("Erro ao listar notícias");
         }
     }
+
+    // [HttpGet]
+    // public async Task<ActionResult<IEnumerable<News>>> GetPublishedByDate()
+    // {
+    //     try
+    //     {
+    //         return Ok(await context.NewsItems.Where(p => p.Published == true).OrderBy(p => p.PublicationDateTime)
+    //         .ToListAsync());
+    //     }
+    //     catch
+    //     {
+    //         return BadRequest("Erro ao listar notícias");
+    //     }
+    // }
 
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] News item)
@@ -65,7 +79,7 @@ public class NewsController : Controller
         try
         {
             if (!await context.NewsItems.AnyAsync(p => p.Id == id))
-                return NotFound("Notícia inválida");
+                return NotFound("Notícia informação encontrada");
 
             context.NewsItems.Update(model);
             await context.SaveChangesAsync();

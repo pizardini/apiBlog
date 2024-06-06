@@ -6,23 +6,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apiBlog.Migrations
 {
     /// <inheritdoc />
-    public partial class migracaoInicial : Migration
+    public partial class InitialMigrate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Authors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Nickname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Authors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -34,24 +39,25 @@ namespace apiBlog.Migrations
                     Headline = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Subhead = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublicationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserNewsId = table.Column<int>(type: "int", nullable: false),
+                    Published = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NewsItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NewsItems_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_NewsItems_Authors_UserNewsId",
+                        column: x => x.UserNewsId,
+                        principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_NewsItems_UserId",
+                name: "IX_NewsItems_UserNewsId",
                 table: "NewsItems",
-                column: "UserId");
+                column: "UserNewsId");
         }
 
         /// <inheritdoc />
@@ -61,7 +67,7 @@ namespace apiBlog.Migrations
                 name: "NewsItems");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Authors");
         }
     }
 }
