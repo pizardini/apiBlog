@@ -6,6 +6,7 @@ public class DataContext : DbContext
         : base(options) { }
 
     public DbSet<Author> Authors { get; set; } = null!;
+    public DbSet<Reader> Readers { get; set; } = null!;
     public DbSet<News> NewsItems { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
     public DbSet<Reaction> Reactions { get; set; } = null!;

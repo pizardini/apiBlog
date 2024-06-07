@@ -1,10 +1,14 @@
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
+[Authorize]
+// [ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
 [ApiController]
 public class AuthorController : ControllerBase
 {
@@ -27,24 +31,24 @@ public class AuthorController : ControllerBase
             return BadRequest("Erro ao listar usuários");
         }
     }
-
+    
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody] Author item)
-    {
-        try
-        {
-            if(context.Authors.Any(p => p.Email == item.Email))
-                return BadRequest("Já existe um usuário com este e-mail");
-                
-            await context.Authors.AddAsync(item);
+    public async Task<ActionResult> Post([FromBody] Author model) {
+        try {
+            if (await context.Authors.AnyAsync(p => p.Email == model.Email))
+            return BadRequest("Já existe usuário com o e-mail informado");
+
+            // model.Password = GetPassword(model);
+            await context.Authors.AddAsync(model);
             await context.SaveChangesAsync();
-            return Ok("usuário salvo com sucesso");
+            return Ok("Usuário salco com sucesso");
         }
         catch
         {
-            return BadRequest("Erro ao salvar o usuário");
+            return BadRequest("Falha ao inserir usuário informado");
         }
     }
+
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Author>> Get([FromRoute] int id)
@@ -151,4 +155,33 @@ public class AuthorController : ControllerBase
     //         return BadRequest();
     //     }
     // }
+
+    [NonAction]
+    private static string Hash(string password) {
+        HashAlgorithm hasher = HashAlgorithm.Create(HashAlgorithmName.SHA512.Name);
+        byte[] stringBytes = Encoding.ASCII.GetBytes(password);
+        byte[] byteArray = hasher.ComputeHash(stringBytes);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        foreach (byte b in byteArray)
+        {
+            stringBuilder.AppendFormat("{0:x2}", b);
+        }
+        return stringBuilder.ToString();
+    }
+
+    [NonAction]
+    private static string GetPassword(Author author) {
+        if (author == null || author.Password == null || author.Password.Trim() == "") {
+            throw new Exception();
+        }
+        string reply = author.Password;
+
+        reply = "skdfjjhslkjf" + reply;
+        reply = Hash(reply);
+        reply = reply + "skdfhsjkf";
+        reply = Hash(reply);
+
+        return reply;
+    }
 }

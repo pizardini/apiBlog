@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 public class Reader
 {
@@ -17,7 +19,8 @@ public class Reader
     public DateTime BirthDate { get; set; }
     public string Password { get; set; }
 
-    public string Code { get; set; }
+    [NotMapped]
+    public string Token { get; set; }
 
     public bool Active { get; set; }
 }

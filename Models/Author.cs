@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Author
 {
@@ -13,16 +14,18 @@ public class Author
     public string Nickname { get; set; }
 
     [Required]
-    [EmailAddress]
+    // [EmailAddress]
+    [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
 
     // public ICollection<News> NewsItems { get; } = new List<News>();
 
     public DateTime BirthDate { get; set; }
 
+    [DataType(DataType.Password)]
     public string Password { get; set; }
-
-    public string Code { get; set; }
+    [NotMapped]
+    public string Token { get; set; }
 
     public bool Active { get; set; }
 }
