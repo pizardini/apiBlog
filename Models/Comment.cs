@@ -14,6 +14,11 @@ public class Comment
     public int ReaderId {get; set; }
     public Reader ReaderComment {get; set; }
     
+
+    [Required]
+    public int NewsId { get; set; }
+    public News NewsComment { get; set; }
+
     [Required]
     public DateTime DatePublished {get; set; }
  }

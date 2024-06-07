@@ -30,8 +30,7 @@ public class News
 
     // public Reaction? Reactions {get; set; }
 
-    public int CommentId {get; set;}
-    public Comment? UserComment {get; set;}
+    // public ICollection<Comment> Comments { get; }
 
     [Required]
     public int UserId { get; set; }

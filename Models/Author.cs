@@ -16,6 +16,8 @@ public class Author
     [EmailAddress]
     public string Email { get; set; }
 
+    // public ICollection<News> NewsItems { get; } = new List<News>();
+
     public DateTime BirthDate { get; set; }
 
     public string Password { get; set; }
