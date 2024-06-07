@@ -35,10 +35,6 @@ namespace apiBlog.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -168,10 +164,6 @@ namespace apiBlog.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -187,7 +179,7 @@ namespace apiBlog.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reader");
+                    b.ToTable("Readers");
                 });
 
             modelBuilder.Entity("Comment", b =>

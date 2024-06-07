@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace apiBlog.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240607130652_AddedComments")]
-    partial class AddedComments
+    [Migration("20240607194729_InitialMigrate")]
+    partial class InitialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,10 +37,6 @@ namespace apiBlog.Migrations
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -171,10 +167,6 @@ namespace apiBlog.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -190,7 +182,7 @@ namespace apiBlog.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reader");
+                    b.ToTable("Readers");
                 });
 
             modelBuilder.Entity("Comment", b =>

@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class NewsController : Controller
@@ -12,6 +14,7 @@ public class NewsController : Controller
         context = _context;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<News>>> Get()
     {
