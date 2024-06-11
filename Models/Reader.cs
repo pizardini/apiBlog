@@ -17,10 +17,13 @@ public class Reader
     public string Email { get; set; }
 
     public DateTime BirthDate { get; set; }
+    
+    [DataType(DataType.Password)]
     public string Password { get; set; }
 
     [NotMapped]
     public string Token { get; set; }
 
+    [Required]
     public bool Active { get; set; }
 }

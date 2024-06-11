@@ -18,8 +18,6 @@ public class Author
     [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
 
-    // public ICollection<News> NewsItems { get; } = new List<News>();
-
     public DateTime BirthDate { get; set; }
 
     [DataType(DataType.Password)]
@@ -27,5 +25,6 @@ public class Author
     [NotMapped]
     public string Token { get; set; }
 
+    [Required]
     public bool Active { get; set; }
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace apiBlog.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240607194729_InitialMigrate")]
-    partial class InitialMigrate
+    [Migration("20240611134121_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,9 @@ namespace apiBlog.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Headline")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -123,15 +126,7 @@ namespace apiBlog.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserNewsId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserNewsId");
 
                     b.ToTable("NewsItems");
                 });
@@ -144,11 +139,20 @@ namespace apiBlog.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("NewsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NewsId");
+
+                    b.HasIndex("ReaderId");
 
                     b.ToTable("Reactions");
                 });
@@ -204,15 +208,23 @@ namespace apiBlog.Migrations
                     b.Navigation("ReaderComment");
                 });
 
-            modelBuilder.Entity("News", b =>
+            modelBuilder.Entity("Reaction", b =>
                 {
-                    b.HasOne("Author", "UserNews")
+                    b.HasOne("News", "NewsReaction")
                         .WithMany()
-                        .HasForeignKey("UserNewsId")
+                        .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserNews");
+                    b.HasOne("Reader", "ReaderReaction")
+                        .WithMany()
+                        .HasForeignKey("ReaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NewsReaction");
+
+                    b.Navigation("ReaderReaction");
                 });
 #pragma warning restore 612, 618
         }

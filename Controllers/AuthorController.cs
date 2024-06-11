@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
-[Authorize]
+// [Authorize]
 // [ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
 [ApiController]
 public class AuthorController : ControllerBase
@@ -41,7 +41,7 @@ public class AuthorController : ControllerBase
             // model.Password = GetPassword(model);
             await context.Authors.AddAsync(model);
             await context.SaveChangesAsync();
-            return Ok("Usuário salco com sucesso");
+            return Ok("Usuário salvo com sucesso");
         }
         catch
         {

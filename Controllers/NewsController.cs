@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[Authorize]
+// [Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class NewsController : Controller
@@ -20,7 +20,7 @@ public class NewsController : Controller
     {
         try
         {
-            return Ok(await context.NewsItems.Include(p => p.UserNews).ToListAsync());
+            return Ok(await context.NewsItems.Include(p => p.AuthorNews).ToListAsync());
         }
         catch
         {
@@ -49,7 +49,7 @@ public class NewsController : Controller
         {
             await context.NewsItems.AddAsync(item);
             await context.SaveChangesAsync();
-            return Ok("Notícia salva com sucesso");
+            return Ok("Notícia salva com sucesso!");
         }
         catch
         {
@@ -63,7 +63,7 @@ public class NewsController : Controller
         try
         {
             if (await context.NewsItems.AnyAsync(p => p.Id == id))
-                return Ok(await context.NewsItems.Include(p => p.UserNews).FirstOrDefaultAsync(p => p.Id == id));
+                return Ok(await context.NewsItems.Include(p => p.AuthorNews).FirstOrDefaultAsync(p => p.Id == id));
             else
                 return NotFound("Notícia informada não encontrada");
         }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -28,15 +29,11 @@ public class News
     [DataType(DataType.DateTime)]
     public DateTime LastUpdate { get; set; }
 
-    // public Reaction? Reactions {get; set; }
-
-    // public ICollection<Comment> Comments { get; }
-
     [Required]
-    public int UserId { get; set; }
+    public int AuthorId { get; set; }
 
-    [Required]
-    public Author UserNews { get; set; }
+    [NotMapped]
+    public Author? AuthorNews { get; set; }
 
     [Required]
     public bool Published { get; set; }

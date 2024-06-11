@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [Authorize]
-// [ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
+[ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
 [ApiController]
 public class ReaderController : ControllerBase
 {

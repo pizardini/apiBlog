@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apiBlog.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,16 +30,22 @@ namespace apiBlog.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reactions",
+                name: "NewsItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Headline = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Subhead = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PublicationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    Published = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reactions", x => x.Id);
+                    table.PrimaryKey("PK_NewsItems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,32 +63,6 @@ namespace apiBlog.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Readers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "NewsItems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Headline = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Subhead = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublicationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserNewsId = table.Column<int>(type: "int", nullable: false),
-                    Published = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_NewsItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_NewsItems_Authors_UserNewsId",
-                        column: x => x.UserNewsId,
-                        principalTable: "Authors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,6 +93,33 @@ namespace apiBlog.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Reactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    NewsId = table.Column<int>(type: "int", nullable: false),
+                    ReaderId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reactions_NewsItems_NewsId",
+                        column: x => x.NewsId,
+                        principalTable: "NewsItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reactions_Readers_ReaderId",
+                        column: x => x.ReaderId,
+                        principalTable: "Readers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_NewsId",
                 table: "Comments",
@@ -124,14 +131,22 @@ namespace apiBlog.Migrations
                 column: "ReaderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NewsItems_UserNewsId",
-                table: "NewsItems",
-                column: "UserNewsId");
+                name: "IX_Reactions_NewsId",
+                table: "Reactions",
+                column: "NewsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reactions_ReaderId",
+                table: "Reactions",
+                column: "ReaderId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Authors");
+
             migrationBuilder.DropTable(
                 name: "Comments");
 
@@ -143,9 +158,6 @@ namespace apiBlog.Migrations
 
             migrationBuilder.DropTable(
                 name: "Readers");
-
-            migrationBuilder.DropTable(
-                name: "Authors");
         }
     }
 }
