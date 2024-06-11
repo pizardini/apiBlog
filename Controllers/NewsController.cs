@@ -28,19 +28,20 @@ public class NewsController : Controller
         }
     }
 
-    // [HttpGet]
-    // public async Task<ActionResult<IEnumerable<News>>> GetPublishedByDate()
-    // {
-    //     try
-    //     {
-    //         return Ok(await context.NewsItems.Where(p => p.Published == true).OrderBy(p => p.PublicationDateTime)
-    //         .ToListAsync());
-    //     }
-    //     catch
-    //     {
-    //         return BadRequest("Erro ao listar notícias");
-    //     }
-    // }
+    [AllowAnonymous]
+    [HttpGet("feed")]
+    public async Task<ActionResult<IEnumerable<News>>> GetPublishedByDate()
+    {
+        try
+        {
+            return Ok(await context.NewsItems.Where(p => p.Published == true).OrderByDescending(p => p.PublicationDateTime)
+            .ToListAsync());
+        }
+        catch
+        {
+            return BadRequest("Erro ao listar notícias");
+        }
+    }
 
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] News item)

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
-// [Authorize]
+[Authorize]
 [ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
 [ApiController]
 public class ReaderController : ControllerBase
@@ -20,6 +20,7 @@ public class ReaderController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<Reader>>> Get()
     {
         try
@@ -47,6 +48,64 @@ public class ReaderController : ControllerBase
         catch
         {
             return BadRequest("Falha ao inserir usuário informado");
+        }
+    }
+
+    [HttpGet("{id}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<Reader>> Get([FromRoute] int id)
+    {
+        try
+        {
+            if (await context.Readers.AnyAsync(p => p.Id == id))
+                return Ok(await context.Readers.FindAsync(id));
+            else
+                return NotFound("O usuário informado não foi encontrado");
+        }
+        catch
+        {
+            return BadRequest("Erro ao efetuar a busca de usuário");
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Put([FromRoute] int id, [FromBody] Reader model)
+    {
+        if (id != model.Id)
+            return BadRequest("Usuário inválido");
+
+        try
+        {
+            if (!await context.Readers.AnyAsync(p => p.Id == id))
+                return NotFound("Usuário não encontrado");
+
+            context.Readers.Update(model);
+            await context.SaveChangesAsync();
+            return Ok("Usuário salvo com sucesso");
+        }
+        catch
+        {
+            return BadRequest("Erro ao salvar usuário informado");
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete([FromRoute] int id)
+    {
+        try
+        {
+            Reader model = await context.Readers.FindAsync(id);
+
+            if (model == null)
+                return NotFound("Usuário inválido");
+
+            context.Readers.Remove(model);
+            await context.SaveChangesAsync();
+            return Ok("Usuário removido com sucesso");
+        }
+        catch
+        {
+            return BadRequest("Falha ao remover o usuário");
         }
     }
 

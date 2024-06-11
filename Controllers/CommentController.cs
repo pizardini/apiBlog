@@ -47,4 +47,61 @@ public class CommentController : ControllerBase
             return BadRequest("Erro ao salvar comentário");
         }
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Comment>> Get([FromRoute] int id)
+    {
+        try
+        {
+            if (await context.Comments.AnyAsync(p => p.Id == id))
+                return Ok(await context.Comments.Include(p => p.ReaderComment).FirstOrDefaultAsync(p => p.Id == id));
+            else
+                return NotFound("Comentário informada não encontrada");
+        }
+        catch
+        {
+            return BadRequest("Erro ao efetuar a busca do comentário");
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Put([FromRoute] int id, [FromBody] Comment model)
+    {
+        if (id != model.Id)
+            return BadRequest("Comentário inválido");
+
+        try
+        {
+            if (!await context.Comments.AnyAsync(p => p.Id == id))
+                return NotFound("Comentário não encontrado");
+
+            context.Comments.Update(model);
+            await context.SaveChangesAsync();
+            return Ok("Comentário salvo com sucesso");
+        }
+        catch
+        {
+            return BadRequest("Erro ao salvar comentário");
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete([FromRoute] int id)
+    {
+        try
+        {
+            Comment model = await context.Comments.FindAsync(id);
+
+            if (model == null)
+                return NotFound("Comentário inválido");
+
+            context.Comments.Remove(model);
+            await context.SaveChangesAsync();
+            return Ok("Comentário removido com sucesso");
+        }
+        catch
+        {
+            return BadRequest("Falha ao remover notícia");
+        }
+    }
 }
