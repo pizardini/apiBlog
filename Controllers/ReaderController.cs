@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
-[Authorize]
+// [Authorize]
 [ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
 [ApiController]
 public class ReaderController : ControllerBase
@@ -17,6 +17,19 @@ public class ReaderController : ControllerBase
     public ReaderController(DataContext _context)
     {
         context = _context;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Reader>>> Get()
+    {
+        try
+        {
+            return Ok(await context.Readers.ToListAsync());
+        }
+        catch
+        {
+            return BadRequest("Erro ao listar usuários");
+        }
     }
     
     [HttpPost]
@@ -29,7 +42,7 @@ public class ReaderController : ControllerBase
             model.Password = GetPassword(model);
             await context.Readers.AddAsync(model);
             await context.SaveChangesAsync();
-            return Ok("Usuário salco com sucesso");
+            return Ok("Usuário salvo com sucesso");
         }
         catch
         {

@@ -32,7 +32,6 @@ public class News
     [Required]
     public int AuthorId { get; set; }
 
-    [NotMapped]
     public Author? AuthorNews { get; set; }
 
     [Required]

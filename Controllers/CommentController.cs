@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
-[Authorize]
+// [Authorize]
 // [ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
 [ApiController]
 public class CommentController : ControllerBase
@@ -21,7 +21,7 @@ public class CommentController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<News>>> Get()
+    public async Task<ActionResult<IEnumerable<Comment>>> Get()
     {
         try
         {
@@ -30,6 +30,21 @@ public class CommentController : ControllerBase
         catch
         {
             return BadRequest("Erro ao listar comentários");
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Post([FromBody] Comment item)
+    {
+        try
+        {
+            await context.Comments.AddAsync(item);
+            await context.SaveChangesAsync();
+            return Ok("comentário salva com sucesso!");
+        }
+        catch
+        {
+            return BadRequest("Erro ao salvar comentário");
         }
     }
 }
