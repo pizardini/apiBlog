@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace apiBlog.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240611134121_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240703062443_Reactions")]
+    partial class Reactions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,6 +128,8 @@ namespace apiBlog.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("NewsItems");
                 });
 
@@ -206,6 +208,17 @@ namespace apiBlog.Migrations
                     b.Navigation("NewsComment");
 
                     b.Navigation("ReaderComment");
+                });
+
+            modelBuilder.Entity("News", b =>
+                {
+                    b.HasOne("Author", "AuthorNews")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AuthorNews");
                 });
 
             modelBuilder.Entity("Reaction", b =>

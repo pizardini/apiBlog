@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 public class KeyMiddleware
 {
     private const string KeyName = "x-api-key";
-    private const string UserRole = "x-user-role";
+    // private const string UserRole = "x-user-role";
 
     private readonly RequestDelegate _next;
 

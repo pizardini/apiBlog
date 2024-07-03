@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace apiBlog.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Reactions : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,23 @@ namespace apiBlog.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Readers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Readers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NewsItems",
                 columns: table => new
                 {
@@ -46,23 +63,12 @@ namespace apiBlog.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NewsItems", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Readers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Readers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NewsItems_Authors_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Authors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,6 +137,11 @@ namespace apiBlog.Migrations
                 column: "ReaderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NewsItems_AuthorId",
+                table: "NewsItems",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reactions_NewsId",
                 table: "Reactions",
                 column: "NewsId");
@@ -145,9 +156,6 @@ namespace apiBlog.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Authors");
-
-            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
@@ -158,6 +166,9 @@ namespace apiBlog.Migrations
 
             migrationBuilder.DropTable(
                 name: "Readers");
+
+            migrationBuilder.DropTable(
+                name: "Authors");
         }
     }
 }

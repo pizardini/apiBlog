@@ -22,8 +22,8 @@ public class Author
 
     [DataType(DataType.Password)]
     public string Password { get; set; }
-    [NotMapped]
-    public string Token { get; set; }
+    // [NotMapped]
+    // public string Token { get; set; }
 
     [Required]
     public bool Active { get; set; }
