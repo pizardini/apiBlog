@@ -18,6 +18,7 @@ public class Author
     [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
 
+    [DataType(DataType.Date)]
     public DateTime BirthDate { get; set; }
 
     [DataType(DataType.Password)]

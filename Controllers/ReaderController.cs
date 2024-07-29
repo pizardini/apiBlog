@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
-[Authorize]
+// [Authorize]
 [ResponseCache(NoStore = true, Duration = 0, Location = ResponseCacheLocation.None)]
 [ApiController]
 public class ReaderController : ControllerBase
@@ -40,7 +40,7 @@ public class ReaderController : ControllerBase
             if (await context.Readers.AnyAsync(p => p.Email == model.Email))
             return BadRequest("Já existe usuário com o e-mail informado");
 
-            model.Password = GetPassword(model);
+            // model.Password = GetPassword(model);
             await context.Readers.AddAsync(model);
             await context.SaveChangesAsync();
             return Ok("Usuário salvo com sucesso");
@@ -101,6 +101,7 @@ public class ReaderController : ControllerBase
 
             context.Readers.Remove(model);
             await context.SaveChangesAsync();
+            Console.WriteLine("teste");
             return Ok("Usuário removido com sucesso");
         }
         catch
