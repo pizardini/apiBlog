@@ -10,6 +10,7 @@ public class DataContext : DbContext
     public DbSet<News> NewsItems { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
     public DbSet<Reaction> Reactions { get; set; } = null!;
+    public DbSet<Admin> Admins { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
