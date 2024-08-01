@@ -41,6 +41,8 @@ public class AuthorController : ControllerBase
             // model.Password = GetPassword(model);
             await context.Authors.AddAsync(model);
             await context.SaveChangesAsync();
+
+            model.Type = 1;
             return Ok("Usuário salvo com sucesso");
         }
         catch

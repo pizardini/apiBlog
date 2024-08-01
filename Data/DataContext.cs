@@ -12,10 +12,10 @@ public class DataContext : DbContext
     public DbSet<Reaction> Reactions { get; set; } = null!;
     public DbSet<Admin> Admins { get; set; } = null!;
 
+     public DbSet<User> Users { get; set; } = null!;
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
     modelBuilder.Entity<News>().Property(p => p.Published).HasDefaultValue(false);
-    // modelBuilder.Entity<News>().Property(p => p.PublicationDateTime).HasDefaultValue("GETDATE()");
-    // modelBuilder.Entity<Comment>().Property(c => c.DatePublished).HasDefaultValueSql("GETDATE()");
     }
 }

@@ -15,14 +15,17 @@ public class AdminController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody] Admin item)
+    public async Task<ActionResult> Post([FromBody] Admin model)
 {
     try
     {
-        item.Password = GetPassword(item);
+        model.Password = GetPassword(model);
 
-        await context.Admins.AddAsync(item);
+        await context.Admins.AddAsync(model);
         await context.SaveChangesAsync();
+        
+
+        model.Type = 0;
         return Ok("Usuário salvo com sucesso");
     }
     catch
@@ -64,18 +67,17 @@ private static string GetPassword(Admin admin)
 }
 
 [HttpPost("autenticar")]
-public async Task<ActionResult> Autenticar([FromBody] Admin item)
+public async Task<ActionResult> Autenticar([FromBody] Admin model)
 {
     try
     {
-        Admin? existe = await context.Admins.FirstOrDefaultAsync(x => x.Email == item.Email);
+        Admin? existe = await context.Admins.FirstOrDefaultAsync(x => x.Email == model.Email);
         if (existe == null)
-            return BadRequest("E-mail e/ou senha inválido(s)");
+            return BadRequest("E-mail e/ou senha inválido(s)1");
 
-        item.Password = GetPassword(item);
-
-        if (item.Password != existe.Password)
-            return BadRequest("E-mail e/ou senha inválido(s)");
+        model.Password = GetPassword(model);
+        if (model.Password != existe.Password)
+            return BadRequest("E-mail e/ou senha inválido(s)2");
 
         existe.Password = "";
         return Ok(existe);
