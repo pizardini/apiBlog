@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -60,5 +61,28 @@ private static string GetPassword(Admin admin)
     retorno = Hash(retorno);
 
     return retorno;
+}
+
+[HttpPost("autenticar")]
+public async Task<ActionResult> Autenticar([FromBody] Admin item)
+{
+    try
+    {
+        Admin? existe = await context.Admins.FirstOrDefaultAsync(x => x.Email == item.Email);
+        if (existe == null)
+            return BadRequest("E-mail e/ou senha inválido(s)");
+
+        item.Password = GetPassword(item);
+
+        if (item.Password != existe.Password)
+            return BadRequest("E-mail e/ou senha inválido(s)");
+
+        existe.Password = "";
+        return Ok(existe);
+    }
+    catch
+    {
+        return BadRequest("Erro geral");
+    }
 }
 }
