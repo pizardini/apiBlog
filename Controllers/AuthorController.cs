@@ -37,12 +37,12 @@ public class AuthorController : ControllerBase
         try {
             if (await context.Authors.AnyAsync(p => p.Email == model.Email))
             return BadRequest("Já existe usuário com o e-mail informado");
-
+            model.Type = 1;
             // model.Password = GetPassword(model);
             await context.Authors.AddAsync(model);
             await context.SaveChangesAsync();
 
-            model.Type = 1;
+            
             return Ok("Usuário salvo com sucesso");
         }
         catch

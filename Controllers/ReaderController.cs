@@ -39,12 +39,12 @@ public class ReaderController : ControllerBase
         try {
             if (await context.Readers.AnyAsync(p => p.Email == model.Email))
             return BadRequest("Já existe usuário com o e-mail informado");
-
-            // model.Password = GetPassword(model);
+            model.Type = 2;
+            model.Password = GetPassword(model);
             await context.Readers.AddAsync(model);
             await context.SaveChangesAsync();
 
-            model.Type = 2;
+            Console.WriteLine(model.Type);
             return Ok("Usuário salvo com sucesso");
         }
         catch
@@ -112,33 +112,36 @@ public class ReaderController : ControllerBase
         }
     }
 
-    [NonAction]
-    private static string Hash(string password) {
-        HashAlgorithm hasher = HashAlgorithm.Create(HashAlgorithmName.SHA512.Name);
-        byte[] stringBytes = Encoding.ASCII.GetBytes(password);
-        byte[] byteArray = hasher.ComputeHash(stringBytes);
+[NonAction]
+private static string Hash(string password)
+{
+    HashAlgorithm hasher = HashAlgorithm.Create(HashAlgorithmName.SHA512.Name);
+    byte[] stringBytes = Encoding.ASCII.GetBytes(password);
+    byte[] byteArray = hasher.ComputeHash(stringBytes);
 
-        StringBuilder stringBuilder = new StringBuilder();
-        foreach (byte b in byteArray)
-        {
-            stringBuilder.AppendFormat("{0:x2}", b);
-        }
-        return stringBuilder.ToString();
+    StringBuilder stringBuilder = new StringBuilder();
+    foreach (byte b in byteArray)
+    {
+        stringBuilder.AppendFormat("{0:x2}", b);
     }
 
-    [NonAction]
-    private static string GetPassword(Reader reader) {
-        if (reader == null || reader.Password == null || reader.Password.Trim() == "") {
-            throw new Exception();
-        }
-        string reply = reader.Password;
+    return stringBuilder.ToString();
+}
 
-        reply = "skdfjjhslkjf" + reply;
-        reply = Hash(reply);
-        reply = reply + "skdfhsjkf";
-        reply = Hash(reply);
+[NonAction]
+private static string GetPassword(User user)
+{
+    if (user == null || user.Password == null || user.Password.Trim() == "")
+        throw new Exception();
 
-        return reply;
-    }
+    string retorno = user.Password;
+
+    retorno = "sdfgg5g5" + retorno;
+    retorno = Hash(retorno);
+    retorno += "w54gw4545445";
+    retorno = Hash(retorno);
+
+    return retorno;
+}
 
 }

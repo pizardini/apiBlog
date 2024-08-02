@@ -20,12 +20,10 @@ public class AdminController : ControllerBase
     try
     {
         model.Password = GetPassword(model);
-
+        model.Type = 0;
         await context.Admins.AddAsync(model);
         await context.SaveChangesAsync();
         
-
-        model.Type = 0;
         return Ok("Usuário salvo com sucesso");
     }
     catch
@@ -66,25 +64,25 @@ private static string GetPassword(Admin admin)
     return retorno;
 }
 
-[HttpPost("autenticar")]
-public async Task<ActionResult> Autenticar([FromBody] Admin model)
-{
-    try
-    {
-        Admin? existe = await context.Admins.FirstOrDefaultAsync(x => x.Email == model.Email);
-        if (existe == null)
-            return BadRequest("E-mail e/ou senha inválido(s)1");
+// [HttpPost("autenticar")]
+// public async Task<ActionResult> Autenticar([FromBody] Admin model)
+// {
+//     try
+//     {
+//         Admin? existe = await context.Admins.FirstOrDefaultAsync(x => x.Email == model.Email);
+//         if (existe == null)
+//             return BadRequest("E-mail e/ou senha inválido(s)1");
 
-        model.Password = GetPassword(model);
-        if (model.Password != existe.Password)
-            return BadRequest("E-mail e/ou senha inválido(s)2");
+//         model.Password = GetPassword(model);
+//         if (model.Password != existe.Password)
+//             return BadRequest("E-mail e/ou senha inválido(s)2");
 
-        existe.Password = "";
-        return Ok(existe);
-    }
-    catch
-    {
-        return BadRequest("Erro geral");
-    }
-}
+//         existe.Password = "";
+//         return Ok(existe);
+//     }
+//     catch
+//     {
+//         return BadRequest("Erro geral");
+//     }
+// }
 }
