@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lQ0ZTHiGUWMrAob3xAGrBfKKuhQMCHKcqQfIcwgc3MlwtBe4HoleMaB/MAkQGd7LBEcHbQFPjaJv9TELJ4KKlQ==",
+  "dgSpecHash": "LUhTjjdM7r4=",
   "success": true,
-  "projectFilePath": "D:\\Desktop\\Dev\\Tiago\\api-blog\\apiBlog\\apiBlog.csproj",
+  "projectFilePath": "C:\\Users\\pizar\\OneDrive\\Desktop\\Dev\\Tiago\\apiBlog\\apiBlog.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pizar\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\pizar\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

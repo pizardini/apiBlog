@@ -34,7 +34,9 @@ public class NewsController : Controller
     {
         try
         {
-            return Ok(await context.NewsItems.Where(p => p.Published == true).OrderByDescending(p => p.PublicationDateTime)
+            return Ok(await context.NewsItems.Include(p => p.AuthorNews)
+            .Where(p => p.Published == true)
+            .OrderByDescending(p => p.PublicationDateTime)
             .ToListAsync());
         }
         catch
@@ -64,7 +66,9 @@ public class NewsController : Controller
         try
         {
             if (await context.NewsItems.AnyAsync(p => p.Id == id))
-                return Ok(await context.NewsItems.Include(p => p.AuthorNews).FirstOrDefaultAsync(p => p.Id == id));
+                return Ok(await context.NewsItems
+                .Include(p => p.AuthorNews)
+                .FirstOrDefaultAsync(p => p.Id == id));
             else
                 return NotFound("Notícia informada não encontrada");
         }
@@ -73,6 +77,30 @@ public class NewsController : Controller
             return BadRequest("Erro ao efetuar a busca da notícia");
         }
     }
+
+// [HttpGet("{id}")]
+// public async Task<ActionResult<News>> Get([FromRoute] int id)
+// {
+//     try
+//     {
+//         var newsItem = await context.NewsItems
+//             .Include(n => n.AuthorNews) // Inclui o autor da notícia
+//             .Include(n => n.Comments)    // Inclui os comentários
+//                 .ThenInclude(c => c.ReaderComment) // Inclui o leitor de cada comentário
+//             .FirstOrDefaultAsync(n => n.Id == id);
+
+//         if (newsItem == null)
+//         {
+//             return NotFound("Notícia informada não encontrada");
+//         }
+
+//         return Ok(newsItem);
+//     }
+//     catch
+//     {
+//         return BadRequest("Erro ao efetuar a busca da notícia");
+//     }
+// }
 
     [HttpPut("{id}")]
     public async Task<ActionResult> Put([FromRoute] int id, [FromBody] News model)

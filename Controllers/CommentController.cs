@@ -64,6 +64,29 @@ public class CommentController : ControllerBase
         }
     }
 
+    [HttpGet("news/{id}")]
+    public async Task<ActionResult<Comment>> GetFromNews([FromRoute] int id)
+    {
+        try
+        {
+            var comments = await context.Comments
+                .Where(c => c.NewsId == id)
+                .Include(c => c.ReaderComment) // Incluindo dados do leitor, se necessário
+                .ToListAsync();
+
+            if (comments == null || !comments.Any())
+            {
+                return NotFound("Nenhum comentário encontrado para a notícia informada.");
+            }
+
+            return Ok(comments);
+        }
+        catch
+        {
+            return BadRequest("Erro ao efetuar a busca do comentário");
+        }
+    }
+
     [HttpPut("{id}")]
     public async Task<ActionResult> Put([FromRoute] int id, [FromBody] Comment model)
     {
