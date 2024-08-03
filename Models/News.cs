@@ -37,7 +37,5 @@ public class News
     [Required]
     public bool Published { get; set; }
 
-    // public ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
 }
 

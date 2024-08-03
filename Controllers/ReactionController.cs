@@ -64,6 +64,27 @@ public class ReactionController : ControllerBase
         }
     }
 
+    [HttpGet("news/{newsId}")]
+    public async Task<ActionResult<Reaction>> GetByNewsId([FromRoute] int newsId)
+    {
+        try
+        {
+            var reactions = await context.Reactions
+                                        .Include(p => p.NewsReaction)
+                                        .Where(p => p.NewsId == newsId)
+                                        .ToListAsync();
+            
+            if (reactions != null)
+                return Ok(reactions);
+            else
+                return NotFound("Notícia sem reações");
+        }
+        catch
+        {
+            return BadRequest("Erro ao efetuar a busca da reação");
+        }
+    }
+
     [HttpPut("{id}")]
     public async Task<ActionResult> Put([FromRoute] int id, [FromBody] Reaction model)
     {
