@@ -42,7 +42,7 @@ public class AuthorController : ControllerBase
             await context.Authors.AddAsync(model);
             await context.SaveChangesAsync();
 
-            
+            Console.WriteLine(model);
             return Ok("Usuário salvo com sucesso");
         }
         catch
@@ -89,25 +89,29 @@ public class AuthorController : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete([FromRoute] int id)
+[HttpDelete("{id}")]
+public async Task<ActionResult> Delete([FromRoute] int id)
+{
+    try
     {
-        try
-        {
-            Author model = await context.Authors.FindAsync(id);
+        Author model = await context.Authors.FindAsync(id);
 
-            if (model == null)
-                return NotFound("Usuário inválido");
+        if (model == null)
+            return NotFound("Usuário inválido");
 
-            context.Authors.Remove(model);
-            await context.SaveChangesAsync();
-            return Ok("Usuário removido com sucesso");
-        }
-        catch
-        {
-            return BadRequest("Falha ao remover o usuário");
-        }
+        context.Authors.Remove(model);
+        await context.SaveChangesAsync();
+        return Ok("Usuário removido com sucesso");
     }
+    catch (DbUpdateException ex)
+    {
+        return BadRequest("Não é possível excluir o autor porque existem notícias associadas a ele.");
+    }
+    catch (Exception ex)
+    {
+        return BadRequest("Ocorreu um erro ao remover o usuário: " + ex.Message);
+    }
+}
 
     [HttpGet("pesquisaNome/{name}")]
     public async Task<ActionResult<IEnumerable<Author>>> Get([FromRoute] string name)

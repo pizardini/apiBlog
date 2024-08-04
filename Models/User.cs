@@ -22,4 +22,6 @@ public class User
     public bool Active { get; set; }
 
     public int Type {get; set; }
+
+    public string? Code {get; set; }
 }

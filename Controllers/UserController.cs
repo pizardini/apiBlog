@@ -91,6 +91,10 @@ public async Task<ActionResult> Autenticar([FromBody] User model)
         if (model.Password != existe.Password)
             return BadRequest("E-mail e/ou senha inválido(s)2");
 
+        if (model.Active) {
+            return BadRequest("Usuário inativo ou bloqueado");
+        }
+        
         existe.Password = "";
         return Ok(existe);
     }
