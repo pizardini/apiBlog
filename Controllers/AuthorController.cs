@@ -38,7 +38,7 @@ public class AuthorController : ControllerBase
             if (await context.Authors.AnyAsync(p => p.Email == model.Email))
             return BadRequest("Já existe usuário com o e-mail informado");
             model.Type = 1;
-            // model.Password = GetPassword(model);
+            model.Password = GetPassword(model);
             await context.Authors.AddAsync(model);
             await context.SaveChangesAsync();
 
@@ -138,28 +138,29 @@ public class AuthorController : ControllerBase
         }
     }
 
-    // [Route("pesquisa")]
-    // [HttpPost]
-    // public async Task<ActionResult<IEnumerable<Author>>> Pesquisa([FromBody] object item)
-    // {
-    //     try
-    //     {
-    //         Author model = JsonSerializer.Deserialize<Author>(item.ToString());
+    [Route("pesquisa")]
+    [HttpPost]
+    public async Task<ActionResult<IEnumerable<Author>>> Pesquisa([FromBody] object item)
+    {
+        try
+        {
+            Author model = JsonSerializer.Deserialize<Author>(item.ToString());
 
-    //         List<Author> resultado = await context.Authors
-    //             .WhereIf(model.Name != null, p => p.Name == model.Name)
-    //             .WhereIf(model.Descricao != null, p => p.Descricao == model.Descricao).ToListAsync();
+            List<Author> resultado = await context.Authors
+                .WhereIf(model.Nickname != null, p => p.Nickname == model.Nickname)
+                .ToListAsync();
 
-    //         return Ok(resultado);
-    //     }
-    //     catch
-    //     {
-    //         return BadRequest();
-    //     }
-    // }
+            return Ok(resultado);
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
 
     [NonAction]
-    private static string Hash(string password) {
+    private static string Hash(string password)
+    {
         HashAlgorithm hasher = HashAlgorithm.Create(HashAlgorithmName.SHA512.Name);
         byte[] stringBytes = Encoding.ASCII.GetBytes(password);
         byte[] byteArray = hasher.ComputeHash(stringBytes);
@@ -169,21 +170,23 @@ public class AuthorController : ControllerBase
         {
             stringBuilder.AppendFormat("{0:x2}", b);
         }
+
         return stringBuilder.ToString();
     }
 
     [NonAction]
-    private static string GetPassword(Author author) {
-        if (author == null || author.Password == null || author.Password.Trim() == "") {
+    private static string GetPassword(User user)
+    {
+        if (user == null || user.Password == null || user.Password.Trim() == "")
             throw new Exception();
-        }
-        string reply = author.Password;
 
-        reply = "skdfjjhslkjf" + reply;
-        reply = Hash(reply);
-        reply = reply + "skdfhsjkf";
-        reply = Hash(reply);
+        string retorno = user.Password;
 
-        return reply;
+        retorno = "sdfgg5g5" + retorno;
+        retorno = Hash(retorno);
+        retorno += "w54gw4545445";
+        retorno = Hash(retorno);
+
+        return retorno;
     }
 }

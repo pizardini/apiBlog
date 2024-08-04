@@ -142,4 +142,60 @@ public class NewsController : Controller
             return BadRequest("Falha ao remover notícia");
         }
     }
+
+
+    [HttpGet("qtd")]
+    public async Task<ActionResult> GetAuthorsWithNewsCount()
+    {
+        try
+        {
+        var authorsWithNewsCount = await context.Authors
+            .GroupJoin(
+                context.NewsItems,
+                author => author.Id,
+                news => news.AuthorId,
+                (author, news) => new
+                {
+                    id = author.Id,
+                    name = author.Name,
+                    nickname = author.Nickname,
+                    newscount = news.Count()
+                }
+            )
+            .ToListAsync();
+
+            return Ok(authorsWithNewsCount);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (ex) here for debugging
+            return BadRequest("Erro ao listar autores com a quantidade de notícias");
+        }
+    }
+
+    [HttpGet("author/{authorId}")]
+    public async Task<ActionResult<IEnumerable<News>>> GetNewsByAuthorId([FromRoute] int authorId)
+    {
+        try
+        {
+            var authorExists = await context.Authors.AnyAsync(a => a.Id == authorId);
+            if (!authorExists)
+            {
+                return NotFound("Autor não encontrado");
+            }
+
+            var newsByAuthor = await context.NewsItems
+                .Where(n => n.AuthorId == authorId)
+                .Include(n => n.AuthorNews)
+                .ToListAsync();
+
+            return Ok(newsByAuthor);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (ex) here for debugging
+            return BadRequest("Erro ao listar notícias do autor");
+        }
+    }
 }
+

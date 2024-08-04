@@ -89,16 +89,16 @@ public class ReactionController : ControllerBase
     public async Task<ActionResult> Put([FromRoute] int id, [FromBody] Reaction model)
     {
         if (id != model.Id)
-            return BadRequest("reação inválido");
+            return BadRequest("reação inválida");
 
         try
         {
             if (!await context.Reactions.AnyAsync(p => p.Id == id))
-                return NotFound("reação não encontrado");
+                return NotFound("reação não encontrada");
 
             context.Reactions.Update(model);
             await context.SaveChangesAsync();
-            return Ok("reação salvo com sucesso");
+            return Ok("reação salva com sucesso");
         }
         catch
         {
