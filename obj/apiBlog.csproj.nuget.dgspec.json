@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Desktop\\Dev\\Tiago\\api-blog\\apiBlog\\apiBlog.csproj": {}
+    "C:\\Users\\pizar\\OneDrive\\Desktop\\Dev\\Tiago\\apiBlog\\apiBlog.csproj": {}
   },
   "projects": {
-    "D:\\Desktop\\Dev\\Tiago\\api-blog\\apiBlog\\apiBlog.csproj": {
+    "C:\\Users\\pizar\\OneDrive\\Desktop\\Dev\\Tiago\\apiBlog\\apiBlog.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Desktop\\Dev\\Tiago\\api-blog\\apiBlog\\apiBlog.csproj",
+        "projectUniqueName": "C:\\Users\\pizar\\OneDrive\\Desktop\\Dev\\Tiago\\apiBlog\\apiBlog.csproj",
         "projectName": "apiBlog",
-        "projectPath": "D:\\Desktop\\Dev\\Tiago\\api-blog\\apiBlog\\apiBlog.csproj",
+        "projectPath": "C:\\Users\\pizar\\OneDrive\\Desktop\\Dev\\Tiago\\apiBlog\\apiBlog.csproj",
         "packagesPath": "C:\\Users\\pizar\\.nuget\\packages\\",
-        "outputPath": "D:\\Desktop\\Dev\\Tiago\\api-blog\\apiBlog\\obj\\",
+        "outputPath": "C:\\Users\\pizar\\OneDrive\\Desktop\\Dev\\Tiago\\apiBlog\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pizar\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -89,7 +89,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

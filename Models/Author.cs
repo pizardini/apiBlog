@@ -5,6 +5,4 @@ public class Author : User
 {
     public string Nickname { get; set; }
 
-    public DateTime BirthDate { get; set; }
-
 }

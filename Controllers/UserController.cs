@@ -20,6 +20,19 @@ public class UserController : ControllerBase
         context = _context;
     }
 
+[HttpGet]
+public async Task<ActionResult<IEnumerable<User>>> Get()
+{
+    try
+    {
+        return Ok(await context.Users.ToListAsync());
+    }
+    catch
+    {
+        return BadRequest("Erro ao listar usuários");
+    }
+}
+
 [HttpGet("obterporemail/{email}")]
 public async Task<ActionResult> ObterPorEmail([FromRoute] string email)
 {
@@ -103,4 +116,42 @@ public async Task<ActionResult> Autenticar([FromBody] User model)
         return BadRequest("Erro geral");
     }
 }
+
+
+[HttpPut("{id}")]
+public async Task<ActionResult> Put([FromRoute] int id, [FromBody] User model)
+{
+    if (id != model.Id)
+        return BadRequest("Usuário inválido");
+
+    try
+    {
+        if (!await context.Users.AnyAsync(p => p.Id == id))
+            return NotFound("Usuário não encontrado");
+
+        context.Users.Update(model);
+        await context.SaveChangesAsync();
+        return Ok("Usuário salvo com sucesso");
+    }
+    catch
+    {
+        return BadRequest("Erro ao salvar usuário informado");
+    }
+}
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<User>> Get([FromRoute] int id)
+    {
+        try
+        {
+            if (await context.Users.AnyAsync(p => p.Id == id))
+                return Ok(await context.Users.FindAsync(id));
+            else
+                return NotFound("O usuário informado não foi encontrado");
+        }
+        catch
+        {
+            return BadRequest("Erro ao efetuar a busca de usuário");
+        }
+    }
 }
